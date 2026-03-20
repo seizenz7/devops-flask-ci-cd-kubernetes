@@ -19,3 +19,20 @@ flowchart LR
     C --> D[Push Docker Image to Docker Hub]
     D --> E[Minikube Kubernetes]
     E --> F[Deployment + Service]
+```
+
+## How to Run Locally
+```bash
+git clone https://github.com/YOURUSERNAME/devops-flask-ci-cd-kubernetes.git
+cd devops-flask-ci-cd-kubernetes
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python app.py
+```
+
+## Screenshots
+Flask Home \
+<img src="screenshots/01-flask-home.png" alt="Flask Home"> \
+Health Check \
+<img src="screenshots/01-health-check.png" alt="Health Check">
