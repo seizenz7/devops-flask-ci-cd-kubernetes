@@ -23,7 +23,7 @@ flowchart LR
 
 ## How to Run Locally
 ```bash
-git clone https://github.com/YOURUSERNAME/devops-flask-ci-cd-kubernetes.git
+git clone https://github.com/seizenz7/devops-flask-ci-cd-kubernetes.git
 cd devops-flask-ci-cd-kubernetes
 python3 -m venv venv
 source venv/bin/activate
