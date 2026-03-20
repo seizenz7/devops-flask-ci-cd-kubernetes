@@ -36,3 +36,7 @@ Flask Home \
 <img src="screenshots/01-flask-home.png" alt="Flask Home"> \
 Health Check \
 <img src="screenshots/01-health-check.png" alt="Health Check">
+
+## Challenges & Learning
+- Challenge: Mengatur virtual environment dan GitHub repo di WSL Windows
+- Learning: Menggunakan virtual environment + requirements.txt membuat project selalu reproducible dan mudah diaudit
