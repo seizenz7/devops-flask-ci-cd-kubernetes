@@ -72,5 +72,4 @@ docker run -d -p 5000:5000 devops-flask
   - Mengubah ke non-root user + clean cache
 - Learning:
   - Selalu rebuild dengan --no-cache setelah ubah Dockerfile — ini kebiasaan penting untuk reproducibility di lingkungan on-prem
-  - Dockerfile best practice meningkatkan security dan efisiensi build — sangat dihargai di lingkungan on-prem BUMN seperti PT Len
-
+  - Dockerfile best practice meningkatkan security dan efisiensi build 
