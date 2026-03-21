@@ -56,8 +56,8 @@ docker run -d -p 5000:5000 devops-flask
 ```
 
 ### Screenshots (Docker)
-<img src="screenshots/02-docker-build.png" alt="Docker Build">
-<img src="screenshots/02-docker-inspect-health.png" alt="Docker Health Check">
+![Docker Build](screenshots/02-docker-build.png)
+![Docker Health Check](screenshots/02-docker-inspect-health.png)
 
 ### Challenges & Learnings 
 - Challenge: Health check status Unhealthy karena curl not found di container
