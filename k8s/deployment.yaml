@@ -1,0 +1,133 @@
+# ============================================================
+# KUBERNETES DEPLOYMENT MANIFEST — Flask Application
+# ============================================================
+# File ini mendefinisikan bagaimana Kubernetes menjalankan
+# aplikasi Flask dalam bentuk Pod yang dikelola oleh Deployment.
+
+# Deployment memastikan:
+# - Jumlah Pod selalu sesuai (self-healing)
+# - Update bisa dilakukan tanpa downtime (rolling update)
+# - Rollback otomatis jika deployment gagal
+# - Security hardening (non-root, read-only filesystem)
+# - Health monitoring lengkap (startup, readiness, liveness)
+# ============================================================
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app
+  labels:
+    app: flask-app
+    environment: production
+    team: devops
+
+# ============================================================
+# SPEC — Konfigurasi Deployment
+# ============================================================
+spec:
+  # ---- REPLIKA ----
+  # Jumlah Pod yang selalu di-maintain oleh Deployment
+  replicas: 3
+
+  # ---- STRATEGI UPDATE (ZERO DOWNTIME) ----
+  # Best practice untuk production: rolling update
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%   # Maksimal 1 pod boleh down (dari 3 replicas)
+      maxSurge: 25%         # Boleh buat 1 pod ekstra sementara
+
+  # ---- SELECTOR ----
+  selector:
+    matchLabels:
+      app: flask-app
+
+  # ============================================================
+  # TEMPLATE POD — Blueprint setiap Pod
+  # ============================================================
+  template:
+    metadata:
+      labels:
+        app: flask-app
+      annotations:
+        # Annotation untuk tracking di dashboard
+        prometheus.io/scrape: "true"
+
+    spec:
+      # ---- SECURITY CONTEXT (BEST PRACTICE) ----
+      # Diterapkan di level Pod
+      securityContext:
+        runAsNonRoot: true          # WAJIB: container tidak boleh jalan sebagai root
+        runAsUser: 1000             # UID yang sama dengan user "appuser" di Dockerfile
+        runAsGroup: 1000
+        fsGroup: 1000               # Mengubah ownership volume jika ada
+
+      # ---- CONTAINERS ----
+      containers:
+      - name: flask
+        # ---- IMAGE ----
+        image: seizenz/flask-app:latest
+        imagePullPolicy: Always
+
+        # ---- PORT ----
+        ports:
+        - containerPort: 5000
+          name: http
+          protocol: TCP
+
+        # ---- RESOURCE MANAGEMENT (BEST PRACTICE) ----
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "300m"
+            memory: "256Mi"
+
+        # ---- SECURITY CONTEXT CONTAINER (BEST PRACTICE) ----
+        securityContext:
+          allowPrivilegeEscalation: false   # Mencegah container naik privilege
+          readOnlyRootFilesystem: true      # Root filesystem jadi read-only (aman)
+          capabilities:
+            drop: ["ALL"]                   # Drop semua Linux capabilities
+
+        # ============================================================
+        # HEALTH PROBES — Best Practice Lengkap
+        # ============================================================
+
+        # STARTUP PROBE
+        # → Digunakan saat container baru start dan butuh waktu lama
+        #   untuk inisialisasi (misal loading model ML, koneksi DB, dll)
+        # → Kubernetes tidak akan cek readiness/liveness sebelum startup selesai
+        startupProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 30          # Maksimal 5 menit (30x10detik) untuk startup
+
+        # READINESS PROBE
+        # → Pod baru tidak akan terima traffic sebelum siap
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+
+        # LIVENESS PROBE
+        # → Jika gagal, Pod akan di-restart otomatis
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 15
+          periodSeconds: 15
+          timeoutSeconds: 5
+          failureThreshold: 3
+
+        # ============================================================
