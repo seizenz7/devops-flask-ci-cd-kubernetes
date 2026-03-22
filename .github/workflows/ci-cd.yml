@@ -49,8 +49,8 @@ jobs:
           context: .                    # Gunakan folder root sebagai context build
           push: true                    # Langsung push image ke Docker Hub
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/devops-flask:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/devops-flask:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/flask-app:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/flask-app:${{ github.sha }}
           # Penjelasan tag: 
           # - latest = versi terbaru
           # - github.sha = commit hash (untuk traceability)
