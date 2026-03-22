@@ -1,0 +1,73 @@
+# ============================================================
+# KUBERNETES SERVICE MANIFEST — Flask Application
+# ============================================================
+# Service adalah abstraksi networking di Kubernetes yang
+# menyediakan satu endpoint stabil untuk mengakses sekumpulan Pod.
+#
+# Mengapa perlu Service?
+#   - Pod bersifat ephemeral (IP berubah setiap restart/recreate)
+#   - Service memberikan IP & DNS tetap sebagai "pintu masuk"
+#   - Service otomatis load-balance traffic ke semua Pod yang cocok
+#
+# Tipe Service yang tersedia:
+#   - ClusterIP   : hanya bisa diakses dari dalam cluster (default)
+#   - NodePort    : expose ke port di setiap Node (development/testing)
+#   - LoadBalancer: expose via cloud load balancer (production)
+#   - ExternalName: alias ke DNS eksternal
+# ============================================================
+
+apiVersion: v1                     # Versi API — Service sudah stabil di v1
+kind: Service                      # Tipe resource: Service
+
+# ------------------------------
+# METADATA
+# Identitas Service di dalam cluster
+# ------------------------------
+metadata:
+  name: flask-app-service          # Nama Service (akan menjadi DNS internal:
+                                   # flask-app-service.<namespace>.svc.cluster.local)
+  labels:
+    app: flask-app                 # Label untuk identifikasi & grouping
+
+# ------------------------------
+# SPEC — Konfigurasi Service
+# ------------------------------
+spec:
+
+  # ---- TIPE SERVICE ----
+  # NodePort: Kubernetes membuka port tertentu (30000-32767) di SETIAP Node.
+  # Traffic ke <NodeIP>:<NodePort> akan di-forward ke Pod.
+  #
+  # Cocok untuk: development, testing, demo
+  # TIDAK direkomendasikan untuk production → gunakan LoadBalancer atau Ingress
+  type: NodePort
+
+  # ---- SELECTOR ----
+  # Menentukan Pod mana yang menjadi target/backend Service ini.
+  # Service akan mengirim traffic HANYA ke Pod dengan label yang cocok.
+  # Label ini HARUS sama dengan label di Deployment template.
+  selector:
+    app: flask-app                 # Match dengan Pod yang punya label app=flask-app
+
+  # ---- PORT MAPPING ----
+  # Mendefinisikan bagaimana traffic di-route dari luar hingga ke container.
+  #
+  # Alur traffic:
+  #   Client → NodeIP:30000 (nodePort)
+  #          → Service:5000 (port)
+  #          → Pod/Container:5000 (targetPort)
+  ports:
+  - port: 5000                     # Port yang di-expose oleh Service di dalam cluster
+                                   # Pod/Service lain mengakses via flask-app-service:5000
+
+    targetPort: 5000               # Port di container yang menerima traffic
+                                   # Harus sesuai dengan containerPort di Deployment
+
+    nodePort: 30000                # Port yang dibuka di setiap Node (range: 30000-32767)
+                                   # Akses dari luar cluster: http://<NodeIP>:30000
+
+    protocol: TCP                  # Protokol komunikasi (default: TCP)
+                                   # Opsi lain: UDP, SCTP
+
+    name: http                     # Nama port — WAJIB jika Service punya lebih dari 1 port
+                                   # Best practice: selalu beri nama deskriptif
