@@ -73,3 +73,18 @@ docker run -d -p 5000:5000 devops-flask
 - Learning:
   - Selalu rebuild dengan --no-cache setelah ubah Dockerfile — ini kebiasaan penting untuk reproducibility di lingkungan on-prem
   - Dockerfile best practice meningkatkan security dan efisiensi build 
+
+---
+
+## Milestone 3 - GitHub Actions CI/CD 
+- Pipeline otomatis build, test, dan push ke Docker Hub
+- Best practice: caching layer, multi-tag (latest + SHA), Docker Buildx
+
+### Screenshots (GitHub Actions)
+![GitHub Actions Success](screenshots/03-actions-success.png)
+![GitHub Actions Process](screenshots/03-actions-proses.png)
+![Docker Hub Image](screenshots/03-docker-hub-image.png)
+
+### Challenges & Learnings 
+- Challenge: Setup secrets dan caching Docker
+- Learning: GitHub Actions + layer caching membuat build jauh lebih cepat dan reproducible
