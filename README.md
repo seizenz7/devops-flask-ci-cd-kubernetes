@@ -88,3 +88,21 @@ docker run -d -p 5000:5000 devops-flask
 ### Challenges & Learnings 
 - Challenge: Setup secrets dan caching Docker
 - Learning: GitHub Actions + layer caching membuat build jauh lebih cepat dan reproducible
+
+---
+
+## Milestone 4 - Kubernetes 
+- Declarative manifests (Deployment + Service)
+- RollingUpdate zero-downtime
+- Readiness & Liveness probes
+- Resource requests & limits
+- Non-root container (dari Dockerfile best practice)
+
+## Screenshots (Kubernetes)
+![kubectl get all](screenshots/04-kubectl-apply-manifests-get-all.png)
+![Rolling Update](screenshots/04-rolling-update.png)
+![App via Minikube](screenshots/04-browser-app-minikube.png)
+
+## Challenges & Learnings (Kubernetes)
+- Challenge: Mengatur probes dan rolling update strategy
+- Learning: Kubernetes declarative + rolling update adalah standar industri on-prem BUMN — ini menunjukkan saya siap production environment
