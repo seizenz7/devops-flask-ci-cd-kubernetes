@@ -11,7 +11,7 @@ Tujuannya: mengubah deployment manual menjadi satu command push-to-deploy — se
 - Orchestration: Kubernetes (Minikube)
 - Documentation: Markdown + Mermaid
 
-## Architecture Diagram
+## Flowchart Diagram
 ```mermaid
 flowchart LR
     A[Developer Push Code] --> B[GitHub Actions]
