@@ -105,4 +105,4 @@ docker run -d -p 5000:5000 devops-flask
 
 ## Challenges & Learnings (Kubernetes)
 - Challenge: Mengatur probes dan rolling update strategy
-- Learning: Kubernetes declarative + rolling update adalah standar industri on-prem BUMN — ini menunjukkan saya siap production environment
+- Learning: Kubernetes declarative + rolling update 
