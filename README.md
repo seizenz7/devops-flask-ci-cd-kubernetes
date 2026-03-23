@@ -98,11 +98,14 @@ docker run -d -p 5000:5000 devops-flask
 - Resource requests & limits
 - Non-root container (dari Dockerfile best practice)
 
-## Screenshots (Kubernetes)
+### Screenshots (Kubernetes)
 ![kubectl get all](screenshots/04-kubectl-apply-manifests-get-all.png)
 ![Rolling Update](screenshots/04-rolling-update.png)
 ![App via Minikube](screenshots/04-browser-app-minikube.png)
 
-## Challenges & Learnings (Kubernetes)
-- Challenge: Mengatur probes dan rolling update strategy
+### Challenges & Learnings (Kubernetes)
+- Challenge: Mengatur probes dan securityContext (`runAsNonRoot`, `readOnlyRootFilesystem`)
 - Learning: Kubernetes declarative + rolling update 
+---
+## ***Key Takeaway Keseluruhan Project 1***
+Project ini mengubah saya dari "bisa install Docker dan Kubernetes" menjadi paham end-to-end DevOps mindset: reproducibility, security by design, automation, dan zero-downtime deployment
