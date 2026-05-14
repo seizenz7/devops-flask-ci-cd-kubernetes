@@ -1,4 +1,7 @@
-venv
+.git
+.gitignore
 __pycache__
+venv
 .pytest_cache
+.github
 *.pyc
