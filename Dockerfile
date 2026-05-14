@@ -38,5 +38,5 @@ EXPOSE 5000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD curl -fs http://localhost:5000/health || exit 1
 
-# Jalankan dengan exec form (best practice)
-CMD ["python", "app.py"]
+# Jalankan dengan gunicorn untuk production (lebih stabil & performa lebih baik)
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
