@@ -91,6 +91,11 @@ spec:
           capabilities:
             drop: ["ALL"]                   # Drop semua Linux capabilities
 
+        # ---- VOLUME MOUNT untuk agar aplikasi bisa menulis data temporer ----
+        volumeMounts:
+        - name: tmp-volume
+          mountPath: /tmp
+
         # ============================================================
         # HEALTH PROBES — Best Practice Lengkap
         # ============================================================
@@ -130,4 +135,8 @@ spec:
           timeoutSeconds: 5
           failureThreshold: 3
 
+      # ---- VOLUMES ----
+      volumes:
+      - name: tmp-volume
+        emptyDir: {}  # Volume temporer yang dihapus saat Pod mati
         # ============================================================
