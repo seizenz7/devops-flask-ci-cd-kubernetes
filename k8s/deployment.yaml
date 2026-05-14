@@ -90,6 +90,16 @@ spec:
           readOnlyRootFilesystem: true      # Root filesystem jadi read-only (aman)
           capabilities:
             drop: ["ALL"]                   # Drop semua Linux capabilities
+            
+        # ---- VOLUME MOUNT untuk agar aplikasi bisa menulis data temporer ----
+        volumeMounts:
+        - name: tmp-volume
+          mountPath: /tmp
+
+      # ---- VOLUMES ----
+      volumes:
+      - name: tmp-volume
+        emptyDir: {}  # Volume temporer yang dihapus saat Pod mati
 
         # ============================================================
         # HEALTH PROBES — Best Practice Lengkap

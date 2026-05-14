@@ -128,7 +128,7 @@ jobs:
       # Step 5: Tunggu sampai pod running dan siap menerima request
       - name: Wait for pod to be ready
         run: |
-          kubectl rollout status deployment/flask-app --timeout=120s
+          kubectl rollout status deployment/flask-app --timeout=180s
       # Step 6: Jalankan integration test (misal pakai curl untuk cek endpoint)
       - name: Run integration test
         run: |
