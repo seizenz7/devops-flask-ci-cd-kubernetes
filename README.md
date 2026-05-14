@@ -25,12 +25,13 @@ flowchart TD
     A[Developer Push Code] --> B{"GitHub Actions (CI/CD)"}
     B -->|Job 1| C[Unit Test: Pytest]
     C -->|If Pass| D[Buildx: Docker Build & Push]
-    D -->|Tag: SHA & Latest| E[Update Manifest via Kustomize]
-    E -->|Job 3| F[Integration Test: KinD Cluster]
-    F --> G[Run Pod & Verify Health Probes]
     
-    H[(Docker Hub Registry)] -.->|Pull Image| D
-    H -.->|Pull Image| F
+    D -->|Push Image: SHA & Latest| H[(Docker Hub Registry)]
+    
+    H -->|Job 3 Starts| E[Update Manifest via Kustomize]
+    E -->|Deploy| F[Integration Test: KinD Cluster]
+    H -.->|Pull Image| E
+    F --> G[Run Pod & Verify Health Probes]
 ```
 ---
 ## Milestone 1 - Flask app
